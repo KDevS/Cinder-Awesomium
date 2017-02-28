@@ -17,9 +17,9 @@ Cinder's tool for setting up empty projects, TinderBox, has been revamped and no
 * Open a command window (or Terminal)
 * Switch to the disk containing the Cinder root folder, e.g.: ```d:```
 * Browse to the Cinder root folder: ```cd path\to\cinder_master```
-* Add the Awesomium block to the blocks folder: ```git clone https://github.com/paulhoux/Cinder-Awesomium.git blocks/Awesomium```
+* Add the Awesomium block to the blocks folder: ```git clone https://github.com/KDevS/Cinder-Awesomium.git blocks/Awesomium```
 
-Alternatively, you can download the repository as a [ZIP-file](https://github.com/paulhoux/Cinder-Awesomium/zipball/master) and manually add the files to a "cinder_master\blocks\Awesomium" folder.
+Alternatively, you can download the repository as a [ZIP-file](https://github.com/KDevS/Cinder-Awesomium/archive/master.zip) and manually add the files to a "cinder_master\blocks\Awesomium" folder.
 
 
 #####Creating a sample application using Tinderbox
