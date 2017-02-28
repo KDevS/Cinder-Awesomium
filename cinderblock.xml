@@ -14,11 +14,6 @@
 	<includePath>include</includePath>
 	<header>include/CinderAwesomium.h</header>
 	<source>src/CinderAwesomium.cpp</source>
-	<platform os="macosx">
-		<framework>build/lib/macosx/Awesomium.framework</framework>
-		<buildCopy>build/lib/macosx/Awesomium.framework</buildCopy>
-		<frameworkPath>build/lib/macosx</frameworkPath>
-	</platform>
 	<platform os="msw">
 		<staticLibrary>build/lib/msw/awesomium.lib</staticLibrary>
 		<buildCopy>build/bin/msw/avcodec-53.dll</buildCopy>

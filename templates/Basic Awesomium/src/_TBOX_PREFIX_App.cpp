@@ -1,5 +1,6 @@
 #include "cinder/ImageIO.h"
-#include "cinder/app/AppBasic.h"
+#include "cinder/app/App.h"
+#include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
 #include "cinder/gl/Texture.h"
 
@@ -9,31 +10,32 @@ using namespace ci;
 using namespace ci::app;
 using namespace std;
 
-class _TBOX_PREFIX_App : public AppBasic {
+class _TBOX_PREFIX_App : public App {
 public:
-	void prepareSettings( Settings *settings );
-	
+	static void prepareSettings( Settings *settings );
+
 	void setup();
 	void shutdown();
 	void update();
 	void draw();
-	
+
 	void resize();
-	
-	void mouseMove( MouseEvent event );	
-	void mouseDown( MouseEvent event );	
-	void mouseDrag( MouseEvent event );	
-	void mouseUp( MouseEvent event );	
-	void mouseWheel( MouseEvent event );	
-	
+
+	void mouseMove( MouseEvent event );
+	void mouseDown( MouseEvent event );
+	void mouseDrag( MouseEvent event );
+	void mouseUp( MouseEvent event );
+	void mouseWheel( MouseEvent event );
+
 	void keyDown( KeyEvent event );
 	void keyUp( KeyEvent event );
+
 private:
 	Awesomium::WebCore*		mWebCorePtr;
 	Awesomium::WebView*		mWebViewPtr;
-	
-	gl::Texture				mWebTexture;
-	gl::Texture				mLoadingTexture;
+
+	gl::TextureRef			mWebTexture;
+	gl::TextureRef			mLoadingTexture;
 
 	Font					mFont;
 };
@@ -50,7 +52,8 @@ void _TBOX_PREFIX_App::setup()
 	Awesomium::WebConfig cnf;
 	cnf.log_level = Awesomium::kLogLevel_Verbose;
 #if defined( CINDER_MAC )
-	std::string frameworkPath = ( getAppPath() / "Contents" / "MacOS" ).string();
+	// TODO: app path needs to be hardcoded here
+	std::string frameworkPath = ( getAppPath() / "BasicAwesomium.app/Contents" / "MacOS" ).string();
 	cnf.package_path = Awesomium::WebString::CreateFromUTF8( frameworkPath.c_str(), frameworkPath.size() );
 #endif
 
@@ -63,7 +66,7 @@ void _TBOX_PREFIX_App::setup()
 	mWebViewPtr->Focus();
 
 	// load and create a "loading" icon
-	try { mLoadingTexture = gl::Texture( loadImage( loadAsset( "loading.png" ) ) ); }
+	try { mLoadingTexture = gl::Texture::create( loadImage( loadAsset( "loading.png" ) ) ); }
 	catch( const std::exception &e ) { console() << "Error loading asset: " << e.what() << std::endl; }
 }
 
@@ -80,11 +83,11 @@ void _TBOX_PREFIX_App::update()
 	mWebCorePtr->Update();
 
 	// create or update our OpenGL Texture from the webview
-	if( ph::awesomium::isDirty( mWebViewPtr ) ) 
+	if( ph::awesomium::isDirty( mWebViewPtr ) )
 	{
 		try {
 			// set texture filter to NEAREST if you don't intend to transform (scale, rotate) it
-			gl::Texture::Format fmt; 
+			gl::Texture::Format fmt;
 			fmt.setMagFilter( GL_NEAREST );
 
 			// get the texture using a handy conversion function
@@ -104,7 +107,7 @@ void _TBOX_PREFIX_App::update()
 
 void _TBOX_PREFIX_App::draw()
 {
-	gl::clear(); 
+	gl::clear();
 
 	if( mWebTexture )
 	{
@@ -112,16 +115,16 @@ void _TBOX_PREFIX_App::draw()
 		gl::draw( mWebTexture );
 	}
 
-	// show spinner while loading 
+	// show spinner while loading
 	if( mLoadingTexture && mWebViewPtr && mWebViewPtr->IsLoading() )
 	{
 		gl::pushModelView();
 
-		gl::translate( 0.5f * Vec2f( getWindowSize() ) );
+		gl::translate( 0.5f * vec2( getWindowSize() ) );
 		gl::scale( 0.5f, 0.5f );
-		gl::rotate( 180.0f * float( getElapsedSeconds() ) );
-		gl::translate( -0.5f * Vec2f( mLoadingTexture.getSize() ) );
-		
+		gl::rotate( M_PI * float( getElapsedSeconds() ) );
+		gl::translate( -0.5f * vec2( mLoadingTexture->getSize() ) );
+
 		gl::color( Color::white() );
 		gl::enableAlphaBlending();
 		gl::draw( mLoadingTexture );
@@ -180,4 +183,4 @@ void _TBOX_PREFIX_App::keyUp( KeyEvent event )
 	ph::awesomium::handleKeyUp( mWebViewPtr, event );
 }
 
-CINDER_APP_BASIC( _TBOX_PREFIX_App, RendererGl )
+CINDER_APP( _TBOX_PREFIX_App, RendererGl, &_TBOX_PREFIX_App::prepareSettings )

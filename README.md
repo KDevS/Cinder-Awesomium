@@ -4,14 +4,14 @@ Cinder-Awesomium
 Cinder block for the Awesomium web browser library.
 
 
-Included are the Windows 1.7.0.5 and MacOSX 1.7.0 RC3 distributions of Awesomium, excluding their ```samples``` and ```wrappers``` folders. Please refer to the [Awesomium license](https://raw.github.com/paulhoux/Cinder-Awesomium/master/LICENSE.txt) for more information on licensing fees. Awesomium is NOT free software!
+Updated for the Windows 1.7.5.1 distributions of Awesomium, excluding their ```samples``` and ```wrappers``` folders. Please refer to the [Awesomium license](https://raw.github.com/paulhoux/Cinder-Awesomium/master/LICENSE.txt) for more information on licensing fees. Awesomium is NOT free software!
 
 
 *Important note*: this block was created as an exercise in creating Cinder blocks. I am not an avid user of Awesomium, nor affiliated, least of all an expert. The block is provided as is. However, I will accept pull request that add to, or update, the functionality of this block.
 
 
 #####Adding this block to Cinder
-This block is meant to be used with version 0.8.5 of Cinder.
+This block is meant to be used with version 0.9.0 of Cinder.
 
 Cinder's tool for setting up empty projects, TinderBox, has been revamped and now supports a neat system for the management of plug-ins called Cinder Blocks. This Awesomium block supports this new feature. To add this block to your copy of Cinder, so it will be detected automatically by TinderBox:
 * Open a command window (or Terminal)
